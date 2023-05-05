@@ -1,4 +1,4 @@
-package com.example.renzhubserver.user.dto.response;
+package com.example.renzhubserver.user.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterResponseDto {
+public class UserRegisterResDto {
     private boolean isSuccess;
 }

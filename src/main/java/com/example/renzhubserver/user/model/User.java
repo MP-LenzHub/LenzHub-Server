@@ -1,4 +1,4 @@
-package com.example.renzhubserver.user;
+package com.example.renzhubserver.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,12 +16,13 @@ public class User {
     private String name;
     private String userId;
     private String password;
-    private String grade;
+    private UserGrade grade;
     private String profileImg;
 
     @Builder
-    public User(String name, String password, String grade, String profileImg) {
+    public User(String name, String userId, String password, UserGrade grade, String profileImg) {
         this.name = name;
+        this.userId = userId;
         this.password = password;
         this.grade = grade;
         this.profileImg = profileImg;
