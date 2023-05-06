@@ -1,7 +1,10 @@
 package com.example.renzhubserver.user.model;
 
+import com.example.renzhubserver.follow.model.Follow;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Entity
 @Getter
