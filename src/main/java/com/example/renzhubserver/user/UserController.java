@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     //로그인
-    @PostMapping("/login")
-    public BaseResponseDto<UserLoginResDto> login(@RequestBody UserLoginReqDto user){
+    @GetMapping("/login")
+    public BaseResponseDto<UserLoginResDto> login(UserLoginReqDto user){
         try{
             UserLoginResDto userLoginResDto = userService.login(user);
             return new BaseResponseDto<>(userLoginResDto);

@@ -45,7 +45,6 @@ public class UserService {
     public UserRegisterResDto join(UserRegisterReqDto user) throws BaseException {
         if(userRepository.existsByUserId(user.getUserId()))
             throw new BaseException(USERS_EXIST_USER_ID);
-        System.out.println(user.getName() + user.getUserId() + user.getPassword());
         User newUser = new User(user.getName(), user.getUserId(), user.getPassword(), UserGrade.Basic, null);
         userRepository.save(newUser);
         return new UserRegisterResDto(true);

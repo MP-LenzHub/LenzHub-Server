@@ -21,7 +21,6 @@ public class FollowService {
         User toUser = userRepository.findByUserId(followSimpleReqDto.getToUserId());
         User fromUser = userRepository.findByUserId(followSimpleReqDto.getFromUserId());
         Follow follow = new Follow(toUser.getId(), fromUser.getId());
-        System.out.println(toUser.getId() + fromUser.getId());
         followRepository.save(follow);
         return new FollowSimpleResDto("팔로우 등록되었음");
     }
