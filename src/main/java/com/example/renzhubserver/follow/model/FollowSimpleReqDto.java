@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class FollowSimpleReqDto {
-    private String toUserId;
-    private String fromUserId;
+    private Long toUserId;
+    private Long fromUserId;
 }

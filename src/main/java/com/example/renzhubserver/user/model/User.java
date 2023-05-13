@@ -1,10 +1,12 @@
 package com.example.renzhubserver.user.model;
 
-import com.example.renzhubserver.follow.model.Follow;
+import com.example.renzhubserver.like.model.Like;
+import com.example.renzhubserver.post.model.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +23,12 @@ public class User {
     private String password;
     private UserGrade grade;
     private String profileImg;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public User(String name, String userId, String password, UserGrade grade, String profileImg) {

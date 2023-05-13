@@ -18,22 +18,18 @@ public class FollowService {
     private UserRepository userRepository;
 
     public FollowSimpleResDto save(FollowSimpleReqDto followSimpleReqDto){
-        User toUser = userRepository.findByUserId(followSimpleReqDto.getToUserId());
-        User fromUser = userRepository.findByUserId(followSimpleReqDto.getFromUserId());
-        Follow follow = new Follow(toUser.getId(), fromUser.getId());
+        Follow follow = new Follow(followSimpleReqDto.getToUserId(), followSimpleReqDto.getFromUserId());
         followRepository.save(follow);
         return new FollowSimpleResDto("팔로우 등록되었음");
     }
 
-    public FollowListDto getFollowingList(String userID){
-        User user = userRepository.findByUserId(userID);
+    public FollowListDto getFollowingList(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         return new FollowListDto(followRepository.findAllByToUser(user.getId()));
     }
 
     public FollowDeleteResDto deleteFollowRelation(FollowSimpleReqDto followSimpleReqDto){
-        User toUser = userRepository.findByUserId(followSimpleReqDto.getToUserId());
-        User fromUser = userRepository.findByUserId(followSimpleReqDto.getFromUserId());
-        followRepository.deleteByToUserAndFromUser(toUser.getId(), fromUser.getId());
+        followRepository.deleteByToUserAndFromUser(followSimpleReqDto.getToUserId(), followSimpleReqDto.getFromUserId());
         return new FollowDeleteResDto("삭제되었습니다.");
     }
 }

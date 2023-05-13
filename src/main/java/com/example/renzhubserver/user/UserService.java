@@ -27,8 +27,6 @@ import static com.example.renzhubserver.config.BaseResponseStatus.*;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private FollowRepository followRepository;
 
     /**
      * 로그인

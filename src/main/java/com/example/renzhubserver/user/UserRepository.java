@@ -1,10 +1,10 @@
 package com.example.renzhubserver.user;
 
 import com.example.renzhubserver.user.model.User;
-import com.example.renzhubserver.user.model.response.UserInfoResDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUserId(String userId);

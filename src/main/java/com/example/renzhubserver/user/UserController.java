@@ -6,13 +6,16 @@ import com.example.renzhubserver.user.model.request.UserLoginReqDto;
 import com.example.renzhubserver.user.model.request.UserRegisterReqDto;
 import com.example.renzhubserver.user.model.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    @Autowired
     private final UserService userService;
+
     //로그인
     @GetMapping("/login")
     public BaseResponseDto<UserLoginResDto> login(UserLoginReqDto user){
