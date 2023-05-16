@@ -24,14 +24,14 @@ public class FollowController {
     }
 
     // 팔로우 취소
-    @PatchMapping("/")
+    @PatchMapping("")
     public BaseResponseDto<FollowDeleteResDto> delete(@RequestBody FollowSimpleReqDto followSimpleReqDto){
         FollowDeleteResDto followDeleteResDto = followService.deleteFollowRelation(followSimpleReqDto);
         return new BaseResponseDto<>(followDeleteResDto);
     }
 
     // 팔로우 추가
-    @PostMapping("/")
+    @PostMapping("")
     public BaseResponseDto<FollowSimpleResDto> save(@RequestBody FollowSimpleReqDto followSimpleReqDto){
         FollowSimpleResDto followSimpleResDto = followService.save(followSimpleReqDto);
         return new BaseResponseDto<>(followSimpleResDto);

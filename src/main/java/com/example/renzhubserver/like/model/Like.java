@@ -4,8 +4,10 @@ import com.example.renzhubserver.post.model.Post;
 import com.example.renzhubserver.user.model.User;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "likes")
 @NoArgsConstructor
@@ -28,3 +30,4 @@ public class Like {
         this.post = post;
     }
 }
+

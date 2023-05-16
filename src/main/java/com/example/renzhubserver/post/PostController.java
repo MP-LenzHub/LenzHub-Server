@@ -1,12 +1,17 @@
 package com.example.renzhubserver.post;
 
+import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.config.BaseResponseDto;
 import com.example.renzhubserver.post.model.PostBasicResDto;
+import com.example.renzhubserver.post.model.PostCreateReqDto;
 import com.example.renzhubserver.post.model.PostMessageResDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,36 +20,63 @@ public class PostController {
     @Autowired
     private final PostService postService;
 
-    // main 화면 게시물 조회
-    @GetMapping("/")
+    /**
+     * main 화면 게시물 조회
+     */
+    @GetMapping("")
     public BaseResponseDto<PostBasicResDto> readAllPosts(@RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size){
         PostBasicResDto postBasicResDto = postService.readAllPosts(page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
 
-    // 게시물 추가
+    /**
+     * 게시물 추가
+     */
+    @PostMapping("/{userId}")
+    public BaseResponseDto<PostMessageResDto> createPost(@PathVariable Long userId,
+                                                         PostCreateReqDto postCreateReqDto){
+        try{
+            PostMessageResDto  postMessageResDto = postService.createPost(userId, postCreateReqDto);
+            return new BaseResponseDto<>(postMessageResDto);
+        }catch (IOException e){
+            return new BaseResponseDto<>(new PostMessageResDto("이상함"));
+        }
+    }
 
-    // 게시물 삭제
+    /**
+     * 게시물 삭제
+     */
+    @DeleteMapping("/{postId}")
+    public BaseResponseDto<PostMessageResDto> deleteBoard(@RequestParam Long postId){
+        PostMessageResDto postMessageResDto = postService.deleteBoard(postId);
+        return new BaseResponseDto<>(postMessageResDto);
+    }
 
-    // 유저가 작성한 게시물 조회
+    /**
+     * 유저가 작성한 게시물 조회
+     */
     @GetMapping("/{userId}")
-    public BaseResponseDto<PostBasicResDto> readUserPosts(@PathVariable String userId,
+    public BaseResponseDto<PostBasicResDto> readUserPosts(@PathVariable Long userId,
                                                           @RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size){
         PostBasicResDto postBasicResDto = postService.readUserPosts(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
 
-    // 좋아요 누르기
-    @PostMapping("/{userId}/{postId}/likes")
+    /**
+     * 좋아요 누르기
+     */
+    @PutMapping("/{userId}/{postId}/likes")
     public BaseResponseDto<PostMessageResDto> createLikePost(@PathVariable Long userId,
                                                              @PathVariable Long postId){
         PostMessageResDto postMessageResDto = postService.createLikePost(userId, postId);
         return new BaseResponseDto<>(postMessageResDto);
     }
 
-    // 좋아요 취소
+    /**
+     * 좋아요 취소
+     */
     @DeleteMapping("/{userId}/{postId}/unlikes")
     public BaseResponseDto<PostMessageResDto> createUnlikeBoard(@PathVariable Long userId,
                                                                 @PathVariable Long postId){
@@ -52,8 +84,10 @@ public class PostController {
         return new BaseResponseDto<>(postMessageResDto);
     }
 
-        // 유저가 좋아요 누른 게시물 조회
-    @GetMapping("/{userId}/{postId}/likes")
+    /**
+     * 유저가 좋아요 누른 게시물 조회
+     */
+    @GetMapping("/{userId}/likes")
     public BaseResponseDto<PostBasicResDto> readUserLikedPosts(@PathVariable Long userId,
                                                                @RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10") int size){
