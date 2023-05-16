@@ -74,19 +74,21 @@ public class PostService {
         // 이미지 업로드
         String beforeImg = s3Uploader.upload(postCreateReqDto.getBeforeImage());
         String afterImg = s3Uploader.upload(postCreateReqDto.getAfterImage());
-        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getCategory_name(), postCreateReqDto.getDate(), beforeImg, afterImg);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getCategory_name(), postCreateReqDto.getBeforeImage().getOriginalFilename(), postCreateReqDto.getAfterImage().getOriginalFilename(), beforeImg, afterImg, user);
         postRepository.save(post);
         return new PostMessageResDto("이미지 업로드 되었습니다.");
     }
-    public PostMessageResDto deleteBoard(Long postId){
+    public PostMessageResDto deleteBoard(Long postId, String postName){
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         // storage 삭제
+        s3Uploader.delete(postName);
         postRepository.delete(post);
         return new PostMessageResDto("삭제 됐슴니다");
     }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory_name(), post.getDate(), post.getBeforeImg(), post.getAfterImg())));
+        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory_name(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
         return postBasicInfos;
     }
 }
