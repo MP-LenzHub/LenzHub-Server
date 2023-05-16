@@ -2,6 +2,7 @@ package com.example.renzhubserver.fileUpload;
 
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,14 @@ public class S3Service {
 
         amazonS3.putObject(bucket, multipartFile.getOriginalFilename(), multipartFile.getInputStream(), objMeta);
         return amazonS3.getUrl(bucket, multipartFile.getOriginalFilename()).toString();
+    }
+
+    public void delete(String fileName) {
+        try {
+            amazonS3.deleteObject(bucket, fileName);
+        } catch (AmazonS3Exception e) {
+            System.err.println(e.getErrorMessage());
+        }
     }
 
 }
