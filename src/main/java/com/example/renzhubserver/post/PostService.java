@@ -1,21 +1,22 @@
 package com.example.renzhubserver.post;
 
+import com.example.renzhubserver.config.BaseException;
+import com.example.renzhubserver.fileUpload.S3Service;
 import com.example.renzhubserver.like.LikeRepository;
-import com.example.renzhubserver.like.model.Like;
-import com.example.renzhubserver.post.model.Post;
-import com.example.renzhubserver.post.model.PostBasicInfo;
-import com.example.renzhubserver.post.model.PostBasicResDto;
-import com.example.renzhubserver.post.model.PostMessageResDto;
+import com.example.renzhubserver.post.model.*;
 import com.example.renzhubserver.user.UserRepository;
 import com.example.renzhubserver.user.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,25 +30,27 @@ public class PostService {
     private UserRepository userRepository;
     @Autowired
     private LikeRepository likeRepository;
+    @Autowired
+    private final S3Service s3Uploader;
 
     public PostBasicResDto readAllPosts(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Post> posts = postRepository.findAll(pageRequest);
-        return new PostBasicResDto(getPostBasicInfo(posts));
+        return new PostBasicResDto(getPostBasicInfo(posts.getContent()));
     }
     // 유저가 작성한 post
-    public PostBasicResDto readUserPosts(String userId, int page, int size){
+    public PostBasicResDto readUserPosts(Long userId, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         Page<Post> posts = postRepository.findByUser(user, pageRequest);
-        return new PostBasicResDto(getPostBasicInfo(posts));
+        return new PostBasicResDto(getPostBasicInfo(posts.getContent()));
     }
     // 유저가 좋아요한 post
     public PostBasicResDto readLikePost(Long userId, int page, int size){
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Post> posts = likeRepository.findByUser(user, pageRequest);
-        return new PostBasicResDto(getPostBasicInfo(posts));
+        return new PostBasicResDto(getPostBasicInfo(posts.getContent()));
     }
     public PostMessageResDto createLikePost(Long userId, Long postId){
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -67,9 +70,23 @@ public class PostService {
         postRepository.save(post);
         return new PostMessageResDto("안쫗아용!");
     }
-    private List<PostBasicInfo> getPostBasicInfo(Page<Post> posts){
+    public PostMessageResDto createPost(Long userId, PostCreateReqDto postCreateReqDto) throws IOException {
+        // 이미지 업로드
+        String beforeImg = s3Uploader.upload(postCreateReqDto.getBeforeImage());
+        String afterImg = s3Uploader.upload(postCreateReqDto.getAfterImage());
+        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getCategory_name(), postCreateReqDto.getDate(), beforeImg, afterImg);
+        postRepository.save(post);
+        return new PostMessageResDto("이미지 업로드 되었습니다.");
+    }
+    public PostMessageResDto deleteBoard(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // storage 삭제
+        postRepository.delete(post);
+        return new PostMessageResDto("삭제 됐슴니다");
+    }
+    private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.getContent().forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory_name(), post.getDate(), post.getProfileImg())));
+        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory_name(), post.getDate(), post.getBeforeImg(), post.getAfterImg())));
         return postBasicInfos;
     }
 }

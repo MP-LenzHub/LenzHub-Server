@@ -32,5 +32,4 @@ public class S3Service {
         return amazonS3.getUrl(bucket, multipartFile.getOriginalFilename()).toString();
     }
 
-
 }

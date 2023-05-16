@@ -1,4 +1,4 @@
-package com.example.renzhubserver.fileUpload;
+package com.example.renzhubserver.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

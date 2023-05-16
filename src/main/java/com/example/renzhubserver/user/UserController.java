@@ -37,7 +37,7 @@ public class UserController {
         }
     }
     // 회원탈퇴
-    @PatchMapping("/{userId}")
+    @DeleteMapping("/{userId}")
     public BaseResponseDto<UserDeleteResDto> delete(@PathVariable("userId") String userId){
         try{
             UserDeleteResDto userDeleteResDto = userService.delete(userId);
@@ -52,12 +52,10 @@ public class UserController {
         UserSearchResDto userSearchResDto = userService.search(userId);
         return new BaseResponseDto<>(userSearchResDto);
     }
-
     // 유저 프로필 api
-//    @GetMapping("/profile/{userId}")
-//    public BaseResponseDto<UserInfoResDto> getProfile(@PathVariable("userId") String userId){
-//        UserInfoResDto userInfoResDto = userService.getUserProfile(userId);
-//        return new BaseResponseDto<>(userInfoResDto);
-//    }
-
+    @GetMapping("/profile/{userId}")
+    public BaseResponseDto<UserInfoResDto> getProfile(@PathVariable("userId") Long userId){
+        UserInfoResDto userInfoResDto = userService.getUserProfile(userId);
+        return new BaseResponseDto<>(userInfoResDto);
+    }
 }

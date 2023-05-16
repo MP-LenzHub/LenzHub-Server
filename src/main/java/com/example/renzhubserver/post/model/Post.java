@@ -23,7 +23,8 @@ public class Post {
     private int price;
     private String category_name;
     private Date date;
-    private String profileImg;
+    private String beforeImg;
+    private String afterImg;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -31,12 +32,13 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
     @Builder
-    public Post(String title,int price, String category_name, Date date, String profileImg){
+    public Post(String title,int price, String category_name, Date date, String beforeImg, String afterImg){
         this.title =title;
         this.price = price;
         this.category_name = category_name;
         this.date = date;
-        this.profileImg = profileImg;
+        this.beforeImg = beforeImg;
+        this.afterImg = afterImg;
     }
 
     public void addLikedBy(User user){
