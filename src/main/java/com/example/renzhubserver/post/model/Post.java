@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Data
 @NoArgsConstructor
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +22,9 @@ public class Post {
     private String title;
     private int price;
     private String category_name;
-    private Date date;
+    private String beforeFileName;
     private String beforeImg;
+    private String afterFileName;
     private String afterImg;
 
     @ManyToOne
@@ -32,13 +33,15 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
     @Builder
-    public Post(String title,int price, String category_name, Date date, String beforeImg, String afterImg){
+    public Post(String title,int price, String category_name, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user){
         this.title =title;
         this.price = price;
         this.category_name = category_name;
-        this.date = date;
+        this.beforeFileName = beforeFileName;
+        this.afterFileName = afterFileName;
         this.beforeImg = beforeImg;
         this.afterImg = afterImg;
+        this.user = user;
     }
 
     public void addLikedBy(User user){

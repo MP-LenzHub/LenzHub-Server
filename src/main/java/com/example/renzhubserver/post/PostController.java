@@ -4,6 +4,7 @@ import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.config.BaseResponseDto;
 import com.example.renzhubserver.post.model.PostBasicResDto;
 import com.example.renzhubserver.post.model.PostCreateReqDto;
+import com.example.renzhubserver.post.model.PostDeleteReqDto;
 import com.example.renzhubserver.post.model.PostMessageResDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,6 @@ public class PostController {
         PostBasicResDto postBasicResDto = postService.readAllPosts(page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
-
     /**
      * 게시물 추가
      */
@@ -43,16 +43,15 @@ public class PostController {
             return new BaseResponseDto<>(new PostMessageResDto("이상함"));
         }
     }
-
     /**
      * 게시물 삭제
      */
-    @DeleteMapping("/{postId}")
-    public BaseResponseDto<PostMessageResDto> deleteBoard(@RequestParam Long postId){
-        PostMessageResDto postMessageResDto = postService.deleteBoard(postId);
+    @DeleteMapping("/{postId}/{postName}")
+    public BaseResponseDto<PostMessageResDto> deleteBoard(@PathVariable Long postId,
+                                                          @PathVariable String postName){
+        PostMessageResDto postMessageResDto = postService.deleteBoard(postId, postName);
         return new BaseResponseDto<>(postMessageResDto);
     }
-
     /**
      * 유저가 작성한 게시물 조회
      */
@@ -63,7 +62,6 @@ public class PostController {
         PostBasicResDto postBasicResDto = postService.readUserPosts(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
-
     /**
      * 좋아요 누르기
      */
@@ -73,7 +71,6 @@ public class PostController {
         PostMessageResDto postMessageResDto = postService.createLikePost(userId, postId);
         return new BaseResponseDto<>(postMessageResDto);
     }
-
     /**
      * 좋아요 취소
      */
