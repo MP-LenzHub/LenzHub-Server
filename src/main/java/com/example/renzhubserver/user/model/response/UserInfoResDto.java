@@ -15,7 +15,8 @@ public class UserInfoResDto {
     private String userId;
     private String name;
     private String profileImgUrl;
-    private Long followCount;
+    private Long followCounts;
+    private int likedCounts;
     private PostBasicResDto likedPosts;
     private PostBasicResDto createPosts;
 }

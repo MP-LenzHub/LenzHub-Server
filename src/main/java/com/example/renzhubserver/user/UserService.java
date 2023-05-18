@@ -88,13 +88,14 @@ public class UserService {
                     user.getName(),
                     user.getProfileImg(),
                     followCount,
+                    user.getLikes().size(),
                     likedPosts,
                     createdPost
                 );
     }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory_name(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
+        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
         return postBasicInfos;
     }
 }

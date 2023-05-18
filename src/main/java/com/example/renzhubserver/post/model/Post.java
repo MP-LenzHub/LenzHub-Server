@@ -21,7 +21,7 @@ public class Post extends BaseTimeEntity {
     private long id;
     private String title;
     private int price;
-    private String category_name;
+    private String category;
     private String beforeFileName;
     private String beforeImg;
     private String afterFileName;
@@ -33,10 +33,10 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
     @Builder
-    public Post(String title,int price, String category_name, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user){
+    public Post(String title,int price, String category, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user){
         this.title =title;
         this.price = price;
-        this.category_name = category_name;
+        this.category = category;
         this.beforeFileName = beforeFileName;
         this.afterFileName = afterFileName;
         this.beforeImg = beforeImg;
