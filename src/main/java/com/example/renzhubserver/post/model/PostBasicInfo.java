@@ -16,6 +16,7 @@ public class PostBasicInfo {
     private String userName;
     private int price;
     private String category_name;
+    private int LikedCount;
     private LocalDateTime date;
     private String beforeFileName;
     private String afterFileName;

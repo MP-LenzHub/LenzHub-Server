@@ -2,10 +2,7 @@ package com.example.renzhubserver.post;
 
 import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.config.BaseResponseDto;
-import com.example.renzhubserver.post.model.PostBasicResDto;
-import com.example.renzhubserver.post.model.PostCreateReqDto;
-import com.example.renzhubserver.post.model.PostDeleteReqDto;
-import com.example.renzhubserver.post.model.PostMessageResDto;
+import com.example.renzhubserver.post.model.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +77,6 @@ public class PostController {
         PostMessageResDto postMessageResDto = postService.createUnlikeBoard(userId, postId);
         return new BaseResponseDto<>(postMessageResDto);
     }
-
     /**
      * 유저가 좋아요 누른 게시물 조회
      */
@@ -89,6 +85,22 @@ public class PostController {
                                                                @RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10") int size){
         PostBasicResDto postBasicResDto = postService.readLikePost(userId, page, size);
+        return new BaseResponseDto<>(postBasicResDto);
+    }
+    /**
+     * 상세 게시물 조회
+     */
+    @GetMapping("/{postId}")
+    public BaseResponseDto<PostBasicInfo> readPost(@PathVariable Long postId){
+        PostBasicInfo readPost = postService.readPost(postId);
+        return new BaseResponseDto<>(readPost);
+    }
+    /**
+     * 카테고리별 조회
+     */
+    @GetMapping("/{category}")
+    public BaseResponseDto<PostBasicResDto> readCategoryPost(@PathVariable String category){
+        PostBasicResDto postBasicResDto = postService.readCategoryPost(category);
         return new BaseResponseDto<>(postBasicResDto);
     }
 }
