@@ -11,5 +11,4 @@ public class UserRegisterReqDto {
     private String name;
     private String userId;
     private String password;
-    private int followCount;
 }

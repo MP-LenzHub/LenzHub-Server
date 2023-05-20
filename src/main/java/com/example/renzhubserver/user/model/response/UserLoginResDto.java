@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserLoginResDto {
-    private boolean isSuccess;
+    private Long userId;
 }
