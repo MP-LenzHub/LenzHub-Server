@@ -14,6 +14,7 @@ public class PostBasicInfo {
     private long id;
     private String title;
     private String userName;
+    private String profileImg;
     private int price;
     private String category_name;
     private int LikedCount;

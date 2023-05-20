@@ -42,7 +42,8 @@ public class UserService {
     public UserLoginResDto login(UserLoginReqDto user) throws BaseException{
         if(!userRepository.existsByUserIdAndPassword(user.getUserId(), user.getPassword()))
             throw new BaseException(USERS_EMPTY);
-        return new UserLoginResDto(true);
+        User user1 = userRepository.findByUserId(user.getUserId());
+        return new UserLoginResDto(user1.getId());
     }
 
     /**
@@ -95,7 +96,7 @@ public class UserService {
     }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
+        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
         return postBasicInfos;
     }
 }
