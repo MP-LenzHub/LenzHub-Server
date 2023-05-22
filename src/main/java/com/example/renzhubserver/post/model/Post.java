@@ -34,7 +34,7 @@ public class Post extends BaseTimeEntity {
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "lenz_id", referencedColumnName = "id")
     private Lenz lenz;
     @Builder

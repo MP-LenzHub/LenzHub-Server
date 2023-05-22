@@ -75,6 +75,7 @@ public class PostService {
         postRepository.save(post);
         return new PostMessageResDto("안쫗아용!");
     }
+    @Transactional //Transaction 안에서 모든게 일어나야한다.
     public PostMessageResDto createPost(Long userId, PostCreateReqDto postCreateReqDto, MultipartFile beforeImage, MultipartFile afterImage) throws IOException {
         // 이미지 업로드
         String beforeImg = s3Uploader.upload(beforeImage);
