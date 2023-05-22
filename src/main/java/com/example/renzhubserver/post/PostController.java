@@ -32,9 +32,12 @@ public class PostController {
      */
     @PostMapping("/{userId}")
     public BaseResponseDto<PostMessageResDto> createPost(@PathVariable Long userId,
-                                                         PostCreateReqDto postCreateReqDto){
+                                                         @RequestPart PostCreateReqDto postCreateReqDto,
+                                                         @RequestPart MultipartFile beforeImage,
+                                                         @RequestPart MultipartFile afterImage
+                                                         ){
         try{
-            PostMessageResDto  postMessageResDto = postService.createPost(userId, postCreateReqDto);
+            PostMessageResDto  postMessageResDto = postService.createPost(userId, postCreateReqDto, beforeImage, afterImage);
             return new BaseResponseDto<>(postMessageResDto);
         }catch (IOException e){
             return new BaseResponseDto<>(new PostMessageResDto("이상함"));

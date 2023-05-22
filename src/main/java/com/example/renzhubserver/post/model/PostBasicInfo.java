@@ -1,5 +1,6 @@
 package com.example.renzhubserver.post.model;
 
+import com.example.renzhubserver.lenz.model.LenzBasicInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class PostBasicInfo {
     private String title;
     private String userName;
     private String profileImg;
+    private String description;
     private int price;
     private String category_name;
     private int LikedCount;
@@ -23,4 +25,5 @@ public class PostBasicInfo {
     private String afterFileName;
     private String beforeImg;
     private String afterImg;
+    private LenzBasicInfoDto lenzBasicInfoDto;
 }

@@ -1,5 +1,6 @@
 package com.example.renzhubserver.post.model;
 
+import com.example.renzhubserver.lenz.model.Lenz;
 import com.example.renzhubserver.like.model.Like;
 import com.example.renzhubserver.user.model.User;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class Post extends BaseTimeEntity {
     private long id;
     private String title;
     private int price;
+    private String description;
     private String category;
     private String beforeFileName;
     private String beforeImg;
@@ -32,16 +34,21 @@ public class Post extends BaseTimeEntity {
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "lenz_id", referencedColumnName = "id")
+    private Lenz lenz;
     @Builder
-    public Post(String title,int price, String category, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user){
+    public Post(String title,int price, String description, String category, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user, Lenz lenz){
         this.title =title;
         this.price = price;
+        this.description = description;
         this.category = category;
         this.beforeFileName = beforeFileName;
         this.afterFileName = afterFileName;
         this.beforeImg = beforeImg;
         this.afterImg = afterImg;
         this.user = user;
+        this.lenz = lenz;
     }
 
     public void addLikedBy(User user){

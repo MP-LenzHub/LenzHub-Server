@@ -2,6 +2,9 @@ package com.example.renzhubserver.post;
 
 import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.fileUpload.S3Service;
+import com.example.renzhubserver.lenz.LenzRepository;
+import com.example.renzhubserver.lenz.model.Lenz;
+import com.example.renzhubserver.lenz.model.LenzBasicInfoDto;
 import com.example.renzhubserver.like.LikeRepository;
 import com.example.renzhubserver.post.model.*;
 import com.example.renzhubserver.user.UserRepository;
@@ -30,6 +33,8 @@ public class PostService {
     private UserRepository userRepository;
     @Autowired
     private LikeRepository likeRepository;
+    @Autowired
+    private LenzRepository lenzRepository;
     @Autowired
     private final S3Service s3Uploader;
 
@@ -70,12 +75,13 @@ public class PostService {
         postRepository.save(post);
         return new PostMessageResDto("안쫗아용!");
     }
-    public PostMessageResDto createPost(Long userId, PostCreateReqDto postCreateReqDto) throws IOException {
+    public PostMessageResDto createPost(Long userId, PostCreateReqDto postCreateReqDto, MultipartFile beforeImage, MultipartFile afterImage) throws IOException {
         // 이미지 업로드
-        String beforeImg = s3Uploader.upload(postCreateReqDto.getBeforeImage());
-        String afterImg = s3Uploader.upload(postCreateReqDto.getAfterImage());
+        String beforeImg = s3Uploader.upload(beforeImage);
+        String afterImg = s3Uploader.upload(afterImage);
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getCategory_name(), postCreateReqDto.getBeforeImage().getOriginalFilename(), postCreateReqDto.getAfterImage().getOriginalFilename(), beforeImg, afterImg, user);
+        Lenz lenz = new Lenz(postCreateReqDto.getLenzBasicInfoDto().getBrightness(), postCreateReqDto.getLenzBasicInfoDto().getContrast(), postCreateReqDto.getLenzBasicInfoDto().getBackLight(), postCreateReqDto.getLenzBasicInfoDto().getSaturate(), postCreateReqDto.getLenzBasicInfoDto().getGrain(), postCreateReqDto.getLenzBasicInfoDto().getTemperature(), postCreateReqDto.getLenzBasicInfoDto().getBrightness(), postCreateReqDto.getLenzBasicInfoDto().getDistortion());
+        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getDescription(), postCreateReqDto.getCategory_name(), beforeImage.getOriginalFilename(), afterImage.getOriginalFilename(), beforeImg, afterImg, user, lenz);
         postRepository.save(post);
         return new PostMessageResDto("이미지 업로드 되었습니다.");
     }
@@ -89,7 +95,7 @@ public class PostService {
     public PostBasicInfo readPost(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         User user = post.getUser();
-        return new PostBasicInfo(post.getId(), post.getTitle(), user.getName(),  user.getProfileImg(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg());
+        return new PostBasicInfo(post.getId(), post.getTitle(), user.getName(),  user.getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()));
     }
     public PostBasicResDto readCategoryPost(String category){
         List<Post> posts = postRepository.findByCategory(category);
@@ -97,7 +103,11 @@ public class PostService {
     }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
+        posts.forEach(post ->
+                postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()))));
         return postBasicInfos;
+    }
+    private LenzBasicInfoDto getLenzBasicInfoDto(Lenz lenz){
+        return new LenzBasicInfoDto(lenz.getBrightness(), lenz.getContrast(), lenz.getBackLight(), lenz.getSaturate(), lenz.getGrain(), lenz.getTemperature(), lenz.getSharpen(), lenz.getDistortion());
     }
 }
