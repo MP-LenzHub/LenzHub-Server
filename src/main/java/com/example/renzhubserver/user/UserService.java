@@ -2,6 +2,8 @@ package com.example.renzhubserver.user;
 
 import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.follow.FollowRepository;
+import com.example.renzhubserver.lenz.model.Lenz;
+import com.example.renzhubserver.lenz.model.LenzBasicInfoDto;
 import com.example.renzhubserver.like.model.Like;
 import com.example.renzhubserver.post.PostRepository;
 import com.example.renzhubserver.post.model.Post;
@@ -96,7 +98,11 @@ public class UserService {
     }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
-        posts.forEach(post -> postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg())));
+        posts.forEach(post ->
+                postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()))));
         return postBasicInfos;
+    }
+    private LenzBasicInfoDto getLenzBasicInfoDto(Lenz lenz){
+        return new LenzBasicInfoDto(lenz.getBrightness(), lenz.getContrast(), lenz.getBackLight(), lenz.getSaturate(), lenz.getGrain(), lenz.getTemperature(), lenz.getSharpen(), lenz.getDistortion());
     }
 }

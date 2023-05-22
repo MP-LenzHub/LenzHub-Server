@@ -1,5 +1,6 @@
 package com.example.renzhubserver.post.model;
 
+import com.example.renzhubserver.lenz.model.LenzBasicInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,6 @@ public class PostCreateReqDto {
     private int price;
     private String category_name;
     private Date date;
-    MultipartFile beforeImage;
-    MultipartFile afterImage;
+    private String description;
+    private LenzBasicInfoDto lenzBasicInfoDto;
 }
