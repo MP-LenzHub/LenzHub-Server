@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class LenzBasicInfoDto {
-    private String brightness;
-    private String contrast;
-    private String backLight;
-    private String saturate;
-    private String grain;
-    private String temperature;
-    private String sharpen;
-    private String distortion;
+    private Float brightness;
+    private Float contrast;
+    private Float backLight;
+    private Float saturate;
+    private Float grain;
+    private Float temperature;
+    private Float sharpen;
+    private Float distortion;
 }
