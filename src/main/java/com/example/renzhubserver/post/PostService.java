@@ -102,6 +102,14 @@ public class PostService {
         List<Post> posts = postRepository.findByCategory(category);
         return new PostBasicResDto(getPostBasicInfo(posts));
     }
+    public PostBasicResDto readFreeCategoryPost(String category){
+        List<Post> posts = postRepository.findByFreeCategory(category);
+        return new PostBasicResDto(getPostBasicInfo(posts));
+    }
+    public PostBasicResDto readNotFreeCategoryPost(String category){
+        List<Post> posts = postRepository.findByNotFreeCategory(category);
+        return new PostBasicResDto(getPostBasicInfo(posts));
+    }
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
         posts.forEach(post ->
