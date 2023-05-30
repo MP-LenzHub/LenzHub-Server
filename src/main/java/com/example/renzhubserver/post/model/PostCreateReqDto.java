@@ -15,7 +15,6 @@ public class PostCreateReqDto {
     private String title;
     private int price;
     private String category_name;
-    private Date date;
     private String description;
     private LenzBasicInfoDto lenzBasicInfoDto;
 }
