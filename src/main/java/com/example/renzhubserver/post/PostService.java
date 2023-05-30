@@ -75,7 +75,6 @@ public class PostService {
         postRepository.save(post);
         return new PostMessageResDto("안쫗아용!");
     }
-    @Transactional //Transaction 안에서 모든게 일어나야한다.
     public PostMessageResDto createPost(Long userId, PostCreateReqDto postCreateReqDto, MultipartFile beforeImage, MultipartFile afterImage) throws IOException {
         // 이미지 업로드
         String beforeImg = s3Uploader.upload(beforeImage);
@@ -83,6 +82,7 @@ public class PostService {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         Lenz lenz = new Lenz(postCreateReqDto.getLenzBasicInfoDto().getBrightness(), postCreateReqDto.getLenzBasicInfoDto().getContrast(), postCreateReqDto.getLenzBasicInfoDto().getBackLight(), postCreateReqDto.getLenzBasicInfoDto().getSaturate(), postCreateReqDto.getLenzBasicInfoDto().getGrain(), postCreateReqDto.getLenzBasicInfoDto().getTemperature(), postCreateReqDto.getLenzBasicInfoDto().getBrightness(), postCreateReqDto.getLenzBasicInfoDto().getDistortion());
         Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getPrice(), postCreateReqDto.getDescription(), postCreateReqDto.getCategory_name(), beforeImage.getOriginalFilename(), afterImage.getOriginalFilename(), beforeImg, afterImg, user, lenz);
+        post.addLikedBy(user);
         postRepository.save(post);
         return new PostMessageResDto("이미지 업로드 되었습니다.");
     }
