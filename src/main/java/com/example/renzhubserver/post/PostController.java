@@ -101,24 +101,24 @@ public class PostController {
     /**
      * 카테고리별 조회
      */
-    @GetMapping("/{category}")
-    public BaseResponseDto<PostBasicResDto> readCategoryPost(@PathVariable String category){
+    @GetMapping("")
+    public BaseResponseDto<PostBasicResDto> readCategoryPost(@RequestParam String category){
         PostBasicResDto postBasicResDto = postService.readCategoryPost(category);
         return new BaseResponseDto<>(postBasicResDto);
     }
     /**
      * 무료 카테고리별 조회
      */
-    @GetMapping("/{category}/free")
-    public BaseResponseDto<PostBasicResDto> readFreeCategoryPost(@PathVariable String category){
+    @GetMapping("/free")
+    public BaseResponseDto<PostBasicResDto> readFreeCategoryPost(@RequestParam String category){
         PostBasicResDto postBasicResDto = postService.readFreeCategoryPost(category);
         return new BaseResponseDto<>(postBasicResDto);
     }
     /**
      * 유료 카테고리별 조회
      */
-    @GetMapping("/{category}/pay")
-    public BaseResponseDto<PostBasicResDto> readNotFreeCategoryPost(@PathVariable String category){
+    @GetMapping("/pay")
+    public BaseResponseDto<PostBasicResDto> readNotFreeCategoryPost(@RequestParam String category){
         PostBasicResDto postBasicResDto = postService.readNotFreeCategoryPost(category);
         return new BaseResponseDto<>(postBasicResDto);
     }
