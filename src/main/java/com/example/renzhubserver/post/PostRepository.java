@@ -19,4 +19,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByFreeCategory(@Param("category") String category);
     @Query(value = "SELECT post FROM Post post WHERE post.price >= 1 AND post.category = :category")
     List<Post> findByNotFreeCategory(@Param("category") String category);
+    List<Post> findByTitleContaining(String title);
 }
