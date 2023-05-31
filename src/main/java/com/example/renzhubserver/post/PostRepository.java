@@ -15,8 +15,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByUser(User user, PageRequest pageRequest);
     List<Post> findByCategory(String category);
-    @Query(value = "SELECT post FROM Post post WHERE post.price >= 1 AND post.category = :category")
-    List<Post> findByFreeCategory(@Param("category") String category);
     @Query(value = "SELECT post FROM Post post WHERE post.price = 0 AND post.category = :category")
+    List<Post> findByFreeCategory(@Param("category") String category);
+    @Query(value = "SELECT post FROM Post post WHERE post.price >= 1 AND post.category = :category")
     List<Post> findByNotFreeCategory(@Param("category") String category);
 }
