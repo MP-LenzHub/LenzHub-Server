@@ -122,4 +122,12 @@ public class PostController {
         PostBasicResDto postBasicResDto = postService.readNotFreeCategoryPost(category);
         return new BaseResponseDto<>(postBasicResDto);
     }
+    /**
+     * title 조회
+     */
+    @GetMapping("/title")
+    public BaseResponseDto<PostBasicResDto> readTitlePost(@RequestParam String title){
+        PostBasicResDto postBasicResDto = postService.readTitlePost(title);
+        return new BaseResponseDto<>(postBasicResDto);
+    }
 }
