@@ -93,7 +93,7 @@ public class PostController {
     /**
      * 상세 게시물 조회
      */
-    @GetMapping("/{postId}")
+    @GetMapping("/{postId}/detailed")
     public BaseResponseDto<PostBasicInfo> readPost(@PathVariable Long postId){
         PostBasicInfo readPost = postService.readPost(postId);
         return new BaseResponseDto<>(readPost);
