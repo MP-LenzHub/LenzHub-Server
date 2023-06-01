@@ -6,6 +6,9 @@ import com.example.renzhubserver.post.model.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,7 +61,7 @@ public class PostController {
     @GetMapping("/{userId}")
     public BaseResponseDto<PostBasicResDto> readUserPosts(@PathVariable Long userId,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size){
+                                                          @RequestParam(defaultValue = "5") int size){
         PostBasicResDto postBasicResDto = postService.readUserPosts(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
@@ -86,7 +89,7 @@ public class PostController {
     @GetMapping("/{userId}/likes")
     public BaseResponseDto<PostBasicResDto> readUserLikedPosts(@PathVariable Long userId,
                                                                @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size){
+                                                               @RequestParam(defaultValue = "5") int size){
         PostBasicResDto postBasicResDto = postService.readLikePost(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
