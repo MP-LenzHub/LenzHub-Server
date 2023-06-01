@@ -58,4 +58,6 @@ public class UserController {
         UserInfoResDto userInfoResDto = userService.getUserProfile(userId);
         return new BaseResponseDto<>(userInfoResDto);
     }
+
+    //grade
 }

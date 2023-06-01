@@ -17,6 +17,7 @@ public class FollowController {
     private FollowService followService;
 
     // 팔로우 리스트
+    //
     @GetMapping("/{userId}")
     public BaseResponseDto<FollowListDto> getFollowList(@PathVariable("userId") Long userId){
         FollowListDto followListDto = followService.getFollowingList(userId);
