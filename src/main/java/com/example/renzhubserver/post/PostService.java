@@ -6,6 +6,7 @@ import com.example.renzhubserver.lenz.LenzRepository;
 import com.example.renzhubserver.lenz.model.Lenz;
 import com.example.renzhubserver.lenz.model.LenzBasicInfoDto;
 import com.example.renzhubserver.like.LikeRepository;
+import com.example.renzhubserver.like.model.Like;
 import com.example.renzhubserver.post.model.*;
 import com.example.renzhubserver.user.UserRepository;
 import com.example.renzhubserver.user.model.User;
@@ -15,6 +16,7 @@ import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional //Transaction 안에서 모든게 일어나야한다.
@@ -52,10 +55,13 @@ public class PostService {
     }
     // 유저가 좋아요한 post
     public PostBasicResDto readLikePost(Long userId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "user_id"));
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Post> posts = likeRepository.findByUser(user, pageRequest);
-        return new PostBasicResDto(getPostBasicInfo(posts.getContent()));
+        Page<Like> posts = likeRepository.findByUserId(user.getId(), pageable);
+        List<Post> likedPosts = posts.stream()
+                .map(Like::getPost)
+                .collect(Collectors.toList());
+        return new PostBasicResDto(getPostBasicInfo(likedPosts));
     }
     public PostMessageResDto createLikePost(Long userId, Long postId){
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));

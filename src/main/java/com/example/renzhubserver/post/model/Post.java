@@ -38,7 +38,7 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "lenz_id", referencedColumnName = "id")
     private Lenz lenz;
     @Builder
-    public Post(String title,int price, String description, String category, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user, Lenz lenz){
+    public Post(String title, int price, String description, String category, String beforeFileName, String afterFileName, String beforeImg, String afterImg, User user, Lenz lenz){
         this.title =title;
         this.price = price;
         this.description = description;
@@ -50,11 +50,9 @@ public class Post extends BaseTimeEntity {
         this.user = user;
         this.lenz = lenz;
     }
-
     public void addLikedBy(User user){
         this.likes.add(new Like(user, this));
     }
-
     public void removeLikedBy(User user){
         this.likes.remove(new Like(user, this));
     }
