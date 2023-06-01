@@ -83,7 +83,9 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         Long followCount = followRepository.countByFromUser(user.getId());  // 팔로우 수 (following)
         List<Post> likedPost = new ArrayList<>();
-        user.getLikes().forEach(like -> like.getPost());
+        user.getLikes().forEach(like -> {
+            likedPost.add(like.getPost());
+        });
         PostBasicResDto likedPosts = new PostBasicResDto(getPostBasicInfo(likedPost));
         PostBasicResDto createdPost = new PostBasicResDto(getPostBasicInfo(user.getPosts()));
         return new UserInfoResDto(
