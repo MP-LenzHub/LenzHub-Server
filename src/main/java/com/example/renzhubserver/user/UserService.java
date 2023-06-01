@@ -90,6 +90,7 @@ public class UserService {
                     user.getUserId(),
                     user.getName(),
                     user.getProfileImg(),
+                    user.getGrade(),
                     followCount,
                     user.getLikes().size(),
                     likedPosts,
