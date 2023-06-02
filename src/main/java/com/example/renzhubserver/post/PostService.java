@@ -102,7 +102,7 @@ public class PostService {
     public PostBasicInfo readPost(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         User user = post.getUser();
-        return new PostBasicInfo(post.getId(), post.getTitle(), user.getName(),  user.getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()));
+        return new PostBasicInfo(post.getId(), user.getId(), post.getTitle(), user.getName(),  user.getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()));
     }
     public PostBasicResDto readCategoryPost(String category){
         List<Post> posts = postRepository.findByCategory(category);
@@ -123,7 +123,7 @@ public class PostService {
     private List<PostBasicInfo> getPostBasicInfo(List<Post> posts){
         List<PostBasicInfo> postBasicInfos = new ArrayList<>();
         posts.forEach(post ->
-                postBasicInfos.add(new PostBasicInfo(post.getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()))));
+                postBasicInfos.add(new PostBasicInfo(post.getId(), post.getUser().getId(), post.getTitle(), post.getUser().getName(), post.getUser().getProfileImg(), post.getDescription(), post.getPrice(), post.getCategory(), post.getLikes().size(), post.getCreatedDate(), post.getBeforeFileName(), post.getAfterFileName(), post.getBeforeImg(), post.getAfterImg(), getLenzBasicInfoDto(post.getLenz()))));
         return postBasicInfos;
     }
     private LenzBasicInfoDto getLenzBasicInfoDto(Lenz lenz){

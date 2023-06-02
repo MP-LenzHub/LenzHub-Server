@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class PostBasicInfo {
     private long id;
+    private long userIdx;
     private String title;
     private String userName;
     private String profileImg;
