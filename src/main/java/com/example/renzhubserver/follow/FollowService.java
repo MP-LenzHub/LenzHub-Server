@@ -5,6 +5,7 @@ import com.example.renzhubserver.like.model.Like;
 import com.example.renzhubserver.post.model.Post;
 import com.example.renzhubserver.user.UserRepository;
 import com.example.renzhubserver.user.model.User;
+import com.example.renzhubserver.user.model.response.UserBasicInfoResDto;
 import com.example.renzhubserver.user.model.response.UserFollowDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,10 @@ public class FollowService {
 
     public FollowListDto getFollowingList(Long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        List<Follow> followList = followRepository.findAllByToUser(user.getId());
+        List<UserBasicInfoResDto> followList = followRepository.findAllByToUser(user.getId());
         List<UserFollowDto> userFollowDtoList = new ArrayList<>();
-        followList.forEach(follow -> {
-            Long id = follow.getFromUser();
+        followList.forEach(userBasicInfoResDto -> {
+            Long id = userBasicInfoResDto.getUserId();
             User u = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
             userFollowDtoList.add(new UserFollowDto(u.getId(), u.getName(), u.getGrade(), u.getPosts().size()));
         });

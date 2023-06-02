@@ -9,7 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserBasicInfoResDto {
     private String name;
-    private String userId;
-    //grade
-    //필터의 수
+    private Long userId;
 }
