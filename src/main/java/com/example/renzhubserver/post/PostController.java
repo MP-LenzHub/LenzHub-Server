@@ -26,7 +26,7 @@ public class PostController {
      */
     @GetMapping("")
     public BaseResponseDto<PostBasicResDto> readAllPosts(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "10") int size){
+                                                         @RequestParam(defaultValue = "20") int size){
         PostBasicResDto postBasicResDto = postService.readAllPosts(page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
@@ -61,7 +61,7 @@ public class PostController {
     @GetMapping("/{userId}")
     public BaseResponseDto<PostBasicResDto> readUserPosts(@PathVariable Long userId,
                                                           @RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "5") int size){
+                                                          @RequestParam(defaultValue = "20") int size){
         PostBasicResDto postBasicResDto = postService.readUserPosts(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
@@ -89,7 +89,7 @@ public class PostController {
     @GetMapping("/{userId}/likes")
     public BaseResponseDto<PostBasicResDto> readUserLikedPosts(@PathVariable Long userId,
                                                                @RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "5") int size){
+                                                               @RequestParam(defaultValue = "20") int size){
         PostBasicResDto postBasicResDto = postService.readLikePost(userId, page, size);
         return new BaseResponseDto<>(postBasicResDto);
     }
