@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserFollowDto {
+    private Long userId;
     private String userName;
     private UserGrade grade;
     private int filterCount;
