@@ -37,7 +37,7 @@ public class FollowService {
         followList.forEach(follow -> {
             Long id = follow.getFromUser();
             User u = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-            userFollowDtoList.add(new UserFollowDto(u.getName(), u.getGrade(), u.getPosts().size()));
+            userFollowDtoList.add(new UserFollowDto(u.getId(), u.getName(), u.getGrade(), u.getPosts().size()));
         });
         return new FollowListDto(userFollowDtoList);
     }
