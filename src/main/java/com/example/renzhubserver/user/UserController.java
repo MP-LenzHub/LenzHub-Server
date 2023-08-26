@@ -6,9 +6,13 @@ import com.example.renzhubserver.user.model.request.UserLoginReqDto;
 import com.example.renzhubserver.user.model.request.UserRegisterReqDto;
 import com.example.renzhubserver.user.model.response.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
@@ -21,8 +25,10 @@ public class UserController {
     public BaseResponseDto<UserLoginResDto> login(UserLoginReqDto user){
         try{
             UserLoginResDto userLoginResDto = userService.login(user);
+            log.info("로그인 성공");
             return new BaseResponseDto<>(userLoginResDto);
         } catch (BaseException exception){
+            log.info("로그인 실패");
             return new BaseResponseDto<>((exception.getStatus()));
         }
     }
