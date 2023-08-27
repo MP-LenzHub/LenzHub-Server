@@ -1,5 +1,6 @@
 package com.example.renzhubserver.user;
 
+import com.example.renzhubserver.aspect.LogExecutionTime;
 import com.example.renzhubserver.config.BaseException;
 import com.example.renzhubserver.config.BaseResponseDto;
 import com.example.renzhubserver.user.model.request.UserLoginReqDto;
@@ -7,8 +8,6 @@ import com.example.renzhubserver.user.model.request.UserRegisterReqDto;
 import com.example.renzhubserver.user.model.response.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +20,7 @@ public class UserController {
     private final UserService userService;
 
     //로그인
+    @LogExecutionTime
     @GetMapping("/login")
     public BaseResponseDto<UserLoginResDto> login(@RequestBody UserLoginReqDto user){
         try{
@@ -33,6 +33,7 @@ public class UserController {
         }
     }
     // 회원가입
+    @LogExecutionTime
     @PostMapping("/register")
     public BaseResponseDto<UserRegisterResDto> register(@RequestBody UserRegisterReqDto user) {
         try {
@@ -43,6 +44,7 @@ public class UserController {
         }
     }
     // 회원탈퇴
+    @LogExecutionTime
     @DeleteMapping("/{userId}")
     public BaseResponseDto<UserDeleteResDto> delete(@PathVariable("userId") String userId){
         try{
@@ -53,12 +55,14 @@ public class UserController {
         }
     }
     // 유저검색
+    @LogExecutionTime
     @GetMapping("/{userId}")
     public BaseResponseDto<UserSearchResDto> search(@PathVariable("userId") String userId){
         UserSearchResDto userSearchResDto = userService.search(userId);
         return new BaseResponseDto<>(userSearchResDto);
     }
     // 유저 프로필 api
+    @LogExecutionTime
     @GetMapping("/profile/{userId}")
     public BaseResponseDto<UserInfoResDto> getProfile(@PathVariable("userId") Long userId){
         UserInfoResDto userInfoResDto = userService.getUserProfile(userId);

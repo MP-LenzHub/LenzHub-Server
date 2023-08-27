@@ -1,5 +1,6 @@
 package com.example.renzhubserver.follow;
 
+import com.example.renzhubserver.aspect.LogExecutionTime;
 import com.example.renzhubserver.config.BaseResponseDto;
 import com.example.renzhubserver.follow.model.FollowSimpleReqDto;
 import com.example.renzhubserver.follow.model.FollowSimpleResDto;
@@ -18,6 +19,7 @@ public class FollowController {
 
     // 팔로우 리스트
     //
+    @LogExecutionTime
     @GetMapping("/{userId}")
     public BaseResponseDto<FollowListDto> getFollowList(@PathVariable("userId") Long userId){
         FollowListDto followListDto = followService.getFollowingList(userId);
@@ -25,6 +27,7 @@ public class FollowController {
     }
 
     // 팔로우 취소
+    @LogExecutionTime
     @PatchMapping("")
     public BaseResponseDto<FollowDeleteResDto> delete(@RequestBody FollowSimpleReqDto followSimpleReqDto){
         FollowDeleteResDto followDeleteResDto = followService.deleteFollowRelation(followSimpleReqDto);
@@ -32,6 +35,7 @@ public class FollowController {
     }
 
     // 팔로우 추가
+    @LogExecutionTime
     @PostMapping("")
     public BaseResponseDto<FollowSimpleResDto> save(@RequestBody FollowSimpleReqDto followSimpleReqDto){
         FollowSimpleResDto followSimpleResDto = followService.save(followSimpleReqDto);
