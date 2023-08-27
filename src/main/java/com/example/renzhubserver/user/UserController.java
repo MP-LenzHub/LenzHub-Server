@@ -22,7 +22,7 @@ public class UserController {
 
     //로그인
     @GetMapping("/login")
-    public BaseResponseDto<UserLoginResDto> login(UserLoginReqDto user){
+    public BaseResponseDto<UserLoginResDto> login(@RequestBody UserLoginReqDto user){
         try{
             UserLoginResDto userLoginResDto = userService.login(user);
             log.info("로그인 성공");
